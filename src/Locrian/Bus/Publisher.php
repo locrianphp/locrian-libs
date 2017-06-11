@@ -18,6 +18,7 @@
 
     use Locrian\Collections\ArrayList;
     use Locrian\Collections\HashMap;
+    use Locrian\Collections\Queue;
 
     class Publisher{
 
@@ -82,11 +83,9 @@
          */
         public function publishCache($eventType, $subscribers){
             if( $this->cache->has($eventType) ){
-                $iterator = $this->cache->get($eventType)->iterator();
-                while( $iterator->hasNext() ){
-                    $event = $iterator->next();
+                $this->cache->get($eventType)->each(function($i, $event) use($subscribers){
                     $this->publish($subscribers, $event);
-                }
+                });
             }
         }
 
@@ -97,11 +96,11 @@
          */
         private function cacheEvent(Event $event){
             if( $this->cache->has($event->getEventType()) ){
-                $this->cache->get($event->getEventType())->add($event);
+                $this->cache->get($event->getEventType())->push($event);
             }
             else{
-                $events = new ArrayList();
-                $events->add($event);
+                $events = new Queue();
+                $events->push($event);
                 $this->cache->add($event->getEventType(), $events);
             }
         }
