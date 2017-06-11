@@ -14,22 +14,22 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-	namespace Locrian\Collections;
+    namespace Locrian\Collections;
 
-	interface IndexedList extends Collection{
+    interface IndexedList extends Collection{
 
-		public function add($item);
+        public function add($item);
 
-		public function addAll($items);
+        public function addAll($items);
 
-		public function get($index);
+        public function get($index);
 
         public function first();
 
         public function last();
 
-		public function set($index, $value);
+        public function set($index, $value);
 
-		public function has($index);
+        public function has($index);
 
-	}
+    }

@@ -14,85 +14,85 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-	namespace Locrian\Collections;
+    namespace Locrian\Collections;
 
-	class ListNode{
+    class ListNode{
 
-		/**
-		 * @var ListNode previous node
-		 */
-		private $prev;
-
-
-		/**
-		 * @var ListNode next node
-		 */
-		private $next;
+        /**
+         * @var ListNode previous node
+         */
+        private $prev;
 
 
-		/**
-		 * @var mixed data
-		 */
-		private $data;
+        /**
+         * @var ListNode next node
+         */
+        private $next;
 
 
-		/**
-		 * Node constructor.
-		 *
-		 * @param $data
-		 */
-		public function __construct($data){
-			$this->data = $data;
-			$this->next = null;
-			$this->prev = null;
-		}
+        /**
+         * @var mixed data
+         */
+        private $data;
 
 
-		/**
-		 * @return ListNode
-		 */
-		public function getPrev(){
-			return $this->prev;
-		}
+        /**
+         * Node constructor.
+         *
+         * @param $data
+         */
+        public function __construct($data){
+            $this->data = $data;
+            $this->next = null;
+            $this->prev = null;
+        }
 
 
-		/**
-		 * @param ListNode $prev
-		 */
-		public function setPrev($prev){
-			$this->prev = &$prev;
-		}
+        /**
+         * @return ListNode
+         */
+        public function getPrev(){
+            return $this->prev;
+        }
 
 
-		/**
-		 * @return ListNode
-		 */
-		public function getNext(){
-			return $this->next;
-		}
+        /**
+         * @param ListNode $prev
+         */
+        public function setPrev($prev){
+            $this->prev = &$prev;
+        }
 
 
-		/**
-		 * @param ListNode $next
-		 */
-		public function setNext($next){
-			$this->next = &$next;
-		}
+        /**
+         * @return ListNode
+         */
+        public function getNext(){
+            return $this->next;
+        }
 
 
-		/**
-		 * @return mixed
-		 */
-		public function getData(){
-			return $this->data;
-		}
+        /**
+         * @param ListNode $next
+         */
+        public function setNext($next){
+            $this->next = &$next;
+        }
 
 
-		/**
-		 * @param mixed $data
-		 */
-		public function setData($data){
-			$this->data = $data;
-		}
+        /**
+         * @return mixed
+         */
+        public function getData(){
+            return $this->data;
+        }
 
-	}
+
+        /**
+         * @param mixed $data
+         */
+        public function setData($data){
+            $this->data = $data;
+        }
+
+    }

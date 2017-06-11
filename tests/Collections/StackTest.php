@@ -41,7 +41,7 @@
         }
 
         public function testPushPop(){
-            $arr = [ 5, 4, 3, 2, 1 ];
+            $arr = [5, 4, 3, 2, 1];
             for( $i = 0; $i < count($arr); $i++ ){
                 $item = $this->stack->pop();
                 self::assertEquals($arr[$i], $item);
@@ -55,7 +55,7 @@
         }
 
         public function testIteratorIterate(){
-            $arr = [ 5, 4, 3, 2, 1 ];
+            $arr = [5, 4, 3, 2, 1];
             $it = $this->stack->iterator();
             $i = 0;
             while( $it->hasNext() ){
@@ -65,8 +65,8 @@
         }
 
         public function testEach(){
-            $arr = [ 5, 4, 3, 2, 1 ];
-            $this->stack->each(function($i, $item) use($arr){
+            $arr = [5, 4, 3, 2, 1];
+            $this->stack->each(function($i, $item) use ($arr){
                 self::assertEquals($arr[$i], $item);
             });
         }
@@ -76,7 +76,7 @@
             $newList = $this->stack->filter(function($i, $ele){
                 return $ele > 2;
             });
-            $newList->each(function($i, $ele) use($arr){
+            $newList->each(function($i, $ele) use ($arr){
                 self::assertEquals($arr[$i], $ele);
             });
         }

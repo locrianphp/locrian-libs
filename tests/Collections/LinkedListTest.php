@@ -146,7 +146,7 @@
 
         public function testEach(){
             $arr = [1, 2, 3, 4, 5];
-            $this->list->each(function($i, $item) use($arr){
+            $this->list->each(function($i, $item) use ($arr){
                 self::assertEquals($arr[$i], $item);
             });
         }
@@ -156,7 +156,7 @@
             $newList = $this->list->filter(function($i, $ele){
                 return $ele > 2;
             });
-            $newList->each(function($i, $ele) use($arr){
+            $newList->each(function($i, $ele) use ($arr){
                 self::assertEquals($arr[$i], $ele);
             });
         }
@@ -172,7 +172,7 @@
         }
 
         public function testIteratorRemove(){
-            $arr = [ 1, 2, 3, 4, 5 ];
+            $arr = [1, 2, 3, 4, 5];
             $it = $this->list->iterator();
             $cnt = 0;
             while( $it->hasNext() ){
@@ -185,8 +185,8 @@
         }
 
         public function testIteratorRemove2(){
-            $arr = [ 1, 2, 3, 4, 5 ];
-            $arr2 = [ 1, 2, 3 ];
+            $arr = [1, 2, 3, 4, 5];
+            $arr2 = [1, 2, 3];
             $it = $this->list->iterator();
             $cnt = 0;
             while( $it->hasNext() ){
@@ -197,13 +197,13 @@
                 self::assertEquals($arr[$cnt], $data);
                 $cnt++;
             }
-            $this->list->each(function($i, $ele) use($arr2){
+            $this->list->each(function($i, $ele) use ($arr2){
                 self::assertEquals($arr2[$i], $ele);
             });
         }
 
         public function testIteratorPrevious(){
-            $arr = [ 1, 2, 3, 4, 3, 4, 5 ];
+            $arr = [1, 2, 3, 4, 3, 4, 5];
             $cnt = 0;
             $it = $this->list->iterator();
             while( $it->hasNext() ){

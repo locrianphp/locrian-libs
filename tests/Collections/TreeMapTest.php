@@ -115,9 +115,9 @@
         }
 
         public function testEach(){
-            $arr = [ "r" => 0, "c1" => 1, "c11" => 11, "c111" => 111,
-                "c112" => 112, "c12" => 12, "c2" => 2, "c21" => 21, "c22" => 22, "c221" => 221, "c3" => 3 ];
-            $this->root->each(function($key, TreeMap $node) use($arr){
+            $arr = ["r" => 0, "c1" => 1, "c11" => 11, "c111" => 111,
+                "c112" => 112, "c12" => 12, "c2" => 2, "c21" => 21, "c22" => 22, "c221" => 221, "c3" => 3];
+            $this->root->each(function($key, TreeMap $node) use ($arr){
                 self::assertEquals($arr[$key], $node->getValue());
             });
         }

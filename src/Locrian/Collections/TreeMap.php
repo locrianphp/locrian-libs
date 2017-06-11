@@ -50,6 +50,7 @@
 
         /**
          * TreeNode constructor.
+         *
          * @param $key mixed
          * @param $value mixed
          */
@@ -192,7 +193,7 @@
                 return $this;
             }
             else{
-                foreach( $this->children->getKeys() as $i ) {
+                foreach( $this->children->getKeys() as $i ){
                     $result = $this->children->get($i)->search($item);
                     if( $result != null ){
                         return $result;
@@ -209,7 +210,7 @@
          */
         public function size(){
             $size = 1;
-            foreach( $this->children->getKeys() as $i ) {
+            foreach( $this->children->getKeys() as $i ){
                 $size += $this->children->get($i)->size();
             }
             return $size;
@@ -230,7 +231,7 @@
          */
         public function each(Closure $callback){
             $callback($this->key, $this);
-            foreach( $this->children->getKeys() as $i ) {
+            foreach( $this->children->getKeys() as $i ){
                 $this->children->get($i)->each($callback);
             }
         }
@@ -252,7 +253,7 @@
         public function makeClone(){
             $root = new TreeMap($this->getKey(), $this->getValue());
             $root->setParent($this->getParent());
-            foreach( $this->children->getKeys() as $i ) {
+            foreach( $this->children->getKeys() as $i ){
                 $child = $this->children->get($i)->makeClone();
                 $root->add($i, $child);
             }

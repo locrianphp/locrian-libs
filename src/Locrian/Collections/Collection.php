@@ -14,24 +14,24 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-	namespace Locrian\Collections;
+    namespace Locrian\Collections;
 
-	use Closure;
+    use Closure;
 
-	interface Collection{
+    interface Collection{
 
-		public function clear();
+        public function clear();
 
-		public function search($item);
+        public function search($item);
 
-		public function remove($key);
+        public function remove($key);
 
-		public function size();
+        public function size();
 
-		public function isEmpty();
+        public function isEmpty();
 
-		public function each(Closure $callback);
+        public function each(Closure $callback);
 
-		public function filter(Closure $callback);
+        public function filter(Closure $callback);
 
-	}
+    }

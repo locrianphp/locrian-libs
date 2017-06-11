@@ -14,24 +14,24 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-	namespace Locrian\Collections\Iterator;
+    namespace Locrian\Collections\Iterator;
 
-	interface Iterator{
+    interface Iterator{
 
-		public function hasNext();
+        public function hasNext();
 
-		public function next();
+        public function next();
 
-		public function hasPrevious();
+        public function hasPrevious();
 
-		public function previous();
+        public function previous();
 
-		public function index();
+        public function index();
 
-		public function remove();
+        public function remove();
 
-		public function reset();
+        public function reset();
 
-		public function getCollection();
+        public function getCollection();
 
-	}
+    }

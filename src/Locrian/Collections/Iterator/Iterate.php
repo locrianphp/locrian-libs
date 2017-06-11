@@ -14,8 +14,8 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-	namespace Locrian\Collections\Iterator;
+    namespace Locrian\Collections\Iterator;
 
-	interface Iterable{
-		public function iterator();
-	}
+    interface Iterate{
+        public function iterator();
+    }

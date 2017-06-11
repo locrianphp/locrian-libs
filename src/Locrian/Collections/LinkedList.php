@@ -14,48 +14,48 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-	namespace Locrian\Collections;
+    namespace Locrian\Collections;
 
-	use Closure;
+    use Closure;
     use Locrian\Arrayable;
     use Locrian\Cloneable;
     use Locrian\InvalidArgumentException;
     use Locrian\IndexOutOfBoundsException;
-    use Locrian\Collections\Iterator\Iterable;
+    use Locrian\Collections\Iterator\Iterate;
     use Locrian\Collections\Iterator\LinkedListIterator;
     use Locrian\Jsonable;
 
-    class LinkedList implements Collection, IndexedList, Cloneable, Arrayable, Jsonable, Iterable{
+    class LinkedList implements Collection, IndexedList, Cloneable, Arrayable, Jsonable, Iterate{
 
-		/**
-		 * @var ListNode head node
-		 */
-		private $head;
-
-
-		/**
-		 * @var ListNode last node
-		 */
-		private $last;
+        /**
+         * @var ListNode head node
+         */
+        private $head;
 
 
-		/**
-		 * @var int size
-		 */
-		private $listSize;
+        /**
+         * @var ListNode last node
+         */
+        private $last;
 
 
-		/**
-		 * LinkedList constructor.
-		 *
-		 * @param array $items first items
-		 */
-		public function __construct(array $items = []){
-			$this->head = null;
-			$this->last = null;
-			$this->listSize = 0;
-			$this->addAll($items);
-		}
+        /**
+         * @var int size
+         */
+        private $listSize;
+
+
+        /**
+         * LinkedList constructor.
+         *
+         * @param array $items first items
+         */
+        public function __construct(array $items = []){
+            $this->head = null;
+            $this->last = null;
+            $this->listSize = 0;
+            $this->addAll($items);
+        }
 
 
         /**
@@ -85,22 +85,24 @@
                         $node->setNext($this->head);
                         $this->head = &$node;
                     }
-                    else if( $index == $this->size() ){ // Add last
-                        $this->last->setNext($node);
-                        $this->last = &$node;
-                    }
-                    else{ // Add somewhere in the middle
-                        $current = $this->head;
-                        $i = 0;
-                        while( $current->getNext() != null ){
-                            if( $index == ($i + 1) ){
-                                $node->setNext($current->getNext());
-                                $current->setNext($node);
-                                break;
-                            }
-                            else{
-                                $current = $current->getNext();
-                                $i++;
+                    else{
+                        if( $index == $this->size() ){ // Add last
+                            $this->last->setNext($node);
+                            $this->last = &$node;
+                        }
+                        else{ // Add somewhere in the middle
+                            $current = $this->head;
+                            $i = 0;
+                            while( $current->getNext() != null ){
+                                if( $index == ($i + 1) ){
+                                    $node->setNext($current->getNext());
+                                    $current->setNext($node);
+                                    break;
+                                }
+                                else{
+                                    $current = $current->getNext();
+                                    $i++;
+                                }
                             }
                         }
                     }
@@ -134,43 +136,43 @@
         }
 
 
-		/**
-		 * @param $data mixed
+        /**
+         * @param $data mixed
          * Adds new item to the end of the list
-		 */
-		public function addLast($data){
-			$this->addTo($this->size(), $data);
-		}
+         */
+        public function addLast($data){
+            $this->addTo($this->size(), $data);
+        }
 
 
-		/**
-		 * @param $data mixed
+        /**
+         * @param $data mixed
          * Adds new item to the beginning of the list
-		 */
-		public function addFirst($data){
-			$this->addTo(0, $data);
-		}
+         */
+        public function addFirst($data){
+            $this->addTo(0, $data);
+        }
 
 
-		/**
-		 * @param $items array|Arrayable
-		 *
-		 * @throws InvalidArgumentException
+        /**
+         * @param $items array|Arrayable
+         *
+         * @throws InvalidArgumentException
          * Adds all the items to the last of
-		 */
-		public function addAll($items){
-			if( !is_array($items) && !($items instanceof Arrayable) ){
-				throw new InvalidArgumentException("Data must be an array or an Arrayable instance.");
-			}
-			else{
-				if( $items instanceof Arrayable ){
-					$items = $items->toArray();
-				}
-				foreach($items as $key => $value ){
-					$this->addLast($value);
-				}
-			}
-		}
+         */
+        public function addAll($items){
+            if( !is_array($items) && !($items instanceof Arrayable) ){
+                throw new InvalidArgumentException("Data must be an array or an Arrayable instance.");
+            }
+            else{
+                if( $items instanceof Arrayable ){
+                    $items = $items->toArray();
+                }
+                foreach( $items as $key => $value ){
+                    $this->addLast($value);
+                }
+            }
+        }
 
 
         /**
@@ -210,7 +212,7 @@
         private function findNodeByIndex($index){
             if( $this->has($index) ){
                 $current = $this->head;
-                for($i = 0; $i < $this->listSize; $i++ ){
+                for( $i = 0; $i < $this->listSize; $i++ ){
                     if( $i === $index ){
                         break;
                     }
@@ -236,167 +238,171 @@
         }
 
 
-		/**
-		 * @return LinkedList
-		 * Clones the list
-		 */
-		public function makeClone(){
-			$arr = $this->toArray();
-			return new LinkedList($arr);
-		}
+        /**
+         * @return LinkedList
+         * Clones the list
+         */
+        public function makeClone(){
+            $arr = $this->toArray();
+            return new LinkedList($arr);
+        }
 
 
-		/**
-		 * @return array Turns the list into an array
-		 */
-		public function toArray(){
-			$arr = [];
-			$tmp = $this->head;
-			while( $tmp != null ){
-				$item = $tmp->getData();
-				if( $item instanceof Arrayable ){
+        /**
+         * @return array Turns the list into an array
+         */
+        public function toArray(){
+            $arr = [];
+            $tmp = $this->head;
+            while( $tmp != null ){
+                $item = $tmp->getData();
+                if( $item instanceof Arrayable ){
                     $arr[] = $item->toArray();
                 }
                 else{
-				    $arr[] = $item;
+                    $arr[] = $item;
                 }
-				$tmp = $tmp->getNext();
-			}
-			return $arr;
-		}
+                $tmp = $tmp->getNext();
+            }
+            return $arr;
+        }
 
 
         /**
          * @return string
          * Converts list to json
          */
-		public function toJson(){
+        public function toJson(){
             return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
 
 
         /**
-		 * @return LinkedListIterator returns an iterator for the linked list
-		 */
-		public function iterator(){
-			return new LinkedListIterator($this);
-		}
+         * @return LinkedListIterator returns an iterator for the linked list
+         */
+        public function iterator(){
+            return new LinkedListIterator($this);
+        }
 
 
-		/**
-		 * Destroys the list
-		 */
-		public function clear(){
-			$this->head = null;
-			$this->last = null;
-			$this->listSize = 0;
-		}
+        /**
+         * Destroys the list
+         */
+        public function clear(){
+            $this->head = null;
+            $this->last = null;
+            $this->listSize = 0;
+        }
 
 
-		/**
-		 * @param $item mixed
-		 *
-		 * @return int
-		 * Returns the index of the requested element
-		 * If element does not exist then returns -1
-		 */
-		public function search($item){
-			$currentIndex = 0;
-			$visitor = $this->head;
-			while( $visitor != null ){
-				if( $visitor->getData() == $item ){
-					return $currentIndex;
-				}
-				$currentIndex++;
-				$visitor = $visitor->getNext();
-			}
-			return -1;
-		}
+        /**
+         * @param $item mixed
+         *
+         * @return int
+         * Returns the index of the requested element
+         * If element does not exist then returns -1
+         */
+        public function search($item){
+            $currentIndex = 0;
+            $visitor = $this->head;
+            while( $visitor != null ){
+                if( $visitor->getData() == $item ){
+                    return $currentIndex;
+                }
+                $currentIndex++;
+                $visitor = $visitor->getNext();
+            }
+            return -1;
+        }
 
 
-		/**
-		 * @param $item mixed
-		 * Removes the only first founded element from the list
-		 */
-		public function remove($item){
-			$index = $this->search($item);
-			if( $index >= 0 ){
-				$this->removeByIndex($index);
-			}
-		}
+        /**
+         * @param $item mixed
+         * Removes the only first founded element from the list
+         */
+        public function remove($item){
+            $index = $this->search($item);
+            if( $index >= 0 ){
+                $this->removeByIndex($index);
+            }
+        }
 
 
-		/**
-		 * @param $item mixed
-		 * Removes all duplicated elements as well
-		 */
-		public function removeMany($item){
-			do{
-				$index = $this->search($item);
-				if( $index >= 0 ){
-					$this->removeByIndex($index);
-				}
-			}
-			while( $index >= 0 );
-		}
+        /**
+         * @param $item mixed
+         * Removes all duplicated elements as well
+         */
+        public function removeMany($item){
+            do{
+                $index = $this->search($item);
+                if( $index >= 0 ){
+                    $this->removeByIndex($index);
+                }
+            }
+            while( $index >= 0 );
+        }
 
 
-		/**
-		 * @param $index
-		 *
-		 * @throws IndexOutOfBoundsException
-		 * Removes an element from the list by its index
-		 */
-		public function removeByIndex($index){
-			if( $this->size() <= $index ){
-				throw new IndexOutOfBoundsException("Given element index is larger then the list size.");
-			}
-			else{
-				if( $this->size() > 0 ){
-					if( $this->size() == 1 ){
-						$this->head = null;
-						$this->last = null;
-						$this->listSize = 0;
-					}
-					else if( $index == 0 ){ // Head
-						$this->head = $this->head->getNext();
-						$this->listSize--;
-					}
-					else if( $index == ($this->size() - 1) ){ // Tail
-						$tmp = $this->head;
-						for( $i = 0; $i < $this->size() - 2; $i++ ){
-							$tmp = $tmp->getNext();
-						}
-						$tmp->setNext(null);
-						$this->last = $tmp;
-						$this->listSize--;
-					}
-					else{
-						$currentIndex = 1;
-						$prev = $this->head;
-						$current = $prev->getNext();
-						while( $current != null ){
-							if( $currentIndex == $index ){
-								$prev->setNext($current->getNext());
-								$this->listSize--;
-								break;
-							}
-							$currentIndex++;
-							$prev = $prev->getNext();
-							$current = $current->getNext();
-						}
-					}
-				}
-			}
-		}
+        /**
+         * @param $index
+         *
+         * @throws IndexOutOfBoundsException
+         * Removes an element from the list by its index
+         */
+        public function removeByIndex($index){
+            if( $this->size() <= $index ){
+                throw new IndexOutOfBoundsException("Given element index is larger then the list size.");
+            }
+            else{
+                if( $this->size() > 0 ){
+                    if( $this->size() == 1 ){
+                        $this->head = null;
+                        $this->last = null;
+                        $this->listSize = 0;
+                    }
+                    else{
+                        if( $index == 0 ){ // Head
+                            $this->head = $this->head->getNext();
+                            $this->listSize--;
+                        }
+                        else{
+                            if( $index == ($this->size() - 1) ){ // Tail
+                                $tmp = $this->head;
+                                for( $i = 0; $i < $this->size() - 2; $i++ ){
+                                    $tmp = $tmp->getNext();
+                                }
+                                $tmp->setNext(null);
+                                $this->last = $tmp;
+                                $this->listSize--;
+                            }
+                            else{
+                                $currentIndex = 1;
+                                $prev = $this->head;
+                                $current = $prev->getNext();
+                                while( $current != null ){
+                                    if( $currentIndex == $index ){
+                                        $prev->setNext($current->getNext());
+                                        $this->listSize--;
+                                        break;
+                                    }
+                                    $currentIndex++;
+                                    $prev = $prev->getNext();
+                                    $current = $current->getNext();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
 
-		/**
-		 * @return int list item size
-		 */
-		public function size(){
-			return $this->listSize;
-		}
+        /**
+         * @return int list item size
+         */
+        public function size(){
+            return $this->listSize;
+        }
 
 
         /**
@@ -407,53 +413,54 @@
         }
 
 
-		/**
-		 * @return mixed value of the first item in the list
-		 * If there is no item then this method will return -1
-		 */
-		public function first(){
-			return $this->size() > 0 ? $this->head->getData() : null;
-		}
+        /**
+         * @return mixed value of the first item in the list
+         * If there is no item then this method will return -1
+         */
+        public function first(){
+            return $this->size() > 0 ? $this->head->getData() : null;
+        }
 
 
-		/**
-		 * @return mixed value of the last item in the list
-		 * If there is no item then this method will return -1
-		 */
-		public function last(){
-			return $this->size() > 0 ? $this->last->getData() : null;
-		}
+        /**
+         * @return mixed value of the last item in the list
+         * If there is no item then this method will return -1
+         */
+        public function last(){
+            return $this->size() > 0 ? $this->last->getData() : null;
+        }
 
 
-		/**
-		 * @param Closure $callback
-		 * Builtin foreach implementation with callback
-		 */
-		public function each(Closure $callback){
-			$i = 0;
-			$it = $this->iterator();
-			while( $it->hasNext() ){
-				$item = $it->next();
-				$callback($i, $item);
-				$i++;
-			}
-		}
+        /**
+         * @param Closure $callback
+         * Builtin foreach implementation with callback
+         */
+        public function each(Closure $callback){
+            $i = 0;
+            $it = $this->iterator();
+            while( $it->hasNext() ){
+                $item = $it->next();
+                $callback($i, $item);
+                $i++;
+            }
+        }
 
 
-		/**
-		 * @param Closure $callback
-		 * @return LinkedList filter
-		 * Filters a list. If callback returns true then element is added to the new list. If not element will not added to new list
-		 */
-		public function filter(Closure $callback){
-			$filtered = new LinkedList();
-			$this->each(function($i, $ele) use($callback, $filtered){
-				$res = $callback($i, $ele);
-				if( $res === true ){
-					$filtered->addLast($ele);
-				}
-			});
-			return $filtered;
-		}
+        /**
+         * @param Closure $callback
+         * @return LinkedList filter
+         * Filters a list. If callback returns true then element is added to the new list. If not element will not
+         *     added to new list
+         */
+        public function filter(Closure $callback){
+            $filtered = new LinkedList();
+            $this->each(function($i, $ele) use ($callback, $filtered){
+                $res = $callback($i, $ele);
+                if( $res === true ){
+                    $filtered->addLast($ele);
+                }
+            });
+            return $filtered;
+        }
 
     }

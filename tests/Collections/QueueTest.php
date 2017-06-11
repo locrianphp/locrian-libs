@@ -41,7 +41,7 @@
         }
 
         public function testPushPop(){
-            $arr = [ 1, 2, 3, 4, 5 ];
+            $arr = [1, 2, 3, 4, 5];
             for( $i = 0; $i < count($arr); $i++ ){
                 if( $arr[$i] == 2 || $arr[$i] == 4 ){
                     $this->queue->push($arr[$i]);
@@ -67,7 +67,7 @@
 
         public function testEach(){
             $arr = [1, 2, 3, 4, 5];
-            $this->queue->each(function($i, $item) use($arr){
+            $this->queue->each(function($i, $item) use ($arr){
                 self::assertEquals($arr[$i], $item);
             });
         }
@@ -77,7 +77,7 @@
             $newList = $this->queue->filter(function($i, $ele){
                 return $ele > 2;
             });
-            $newList->each(function($i, $ele) use($arr){
+            $newList->each(function($i, $ele) use ($arr){
                 self::assertEquals($arr[$i], $ele);
             });
         }

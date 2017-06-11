@@ -56,7 +56,7 @@
 
         public function testEach(){
             $arr = [1, 2, 3, 4, 5];
-            $this->list->each(function($i, $item) use($arr){
+            $this->list->each(function($i, $item) use ($arr){
                 self::assertEquals($arr[$i], $item);
             });
         }
@@ -72,7 +72,7 @@
         }
 
         public function testIteratorRemove(){
-            $arr = [ 1, 2, 3, 4, 5 ];
+            $arr = [1, 2, 3, 4, 5];
             $it = $this->list->iterator();
             $cnt = 0;
             while( $it->hasNext() ){
@@ -85,7 +85,7 @@
         }
 
         public function testIteratorPrevious(){
-            $arr = [ 1, 2, 3, 4, 3, 4, 5 ];
+            $arr = [1, 2, 3, 4, 3, 4, 5];
             $cnt = 0;
             $it = $this->list->iterator();
             while( $it->hasNext() ){
@@ -103,7 +103,7 @@
         public function testToArray(){
             $arr = [1, 2, 3, 4, 5];
             $arr2 = $this->list->toArray();
-            for( $i = 0; $i < count($arr); $i++){
+            for( $i = 0; $i < count($arr); $i++ ){
                 self::assertEquals($arr[$i], $arr2[$i]);
             }
         }
@@ -118,7 +118,7 @@
                     return false;
                 }
             });
-            $newList->each(function($i, $item) use($newListArray){
+            $newList->each(function($i, $item) use ($newListArray){
                 self::assertEquals($newListArray[$i], $item);
             });
         }
