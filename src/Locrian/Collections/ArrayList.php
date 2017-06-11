@@ -137,6 +137,14 @@
 		}
 
 
+        /**
+         * @return bool
+         */
+        public function isEmpty(){
+            return $this->size() === 0;
+        }
+
+
 		/**
 		 * @param $index
 		 *

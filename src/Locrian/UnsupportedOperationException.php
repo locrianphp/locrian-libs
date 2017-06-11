@@ -14,22 +14,18 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-	namespace Locrian\Collections;
+    namespace Locrian;
 
-	interface IndexedList extends Collection{
+    use Exception;
 
-		public function add($item);
+    class UnsupportedOperationException extends Exception{
 
-		public function addAll($items);
+        public function __construct($message){
+            parent::__construct($message);
+        }
 
-		public function get($index);
+        public function __toString(){
+            return $this->getMessage();
+        }
 
-        public function first();
-
-        public function last();
-
-		public function set($index, $value);
-
-		public function has($index);
-
-	}
+    }

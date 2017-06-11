@@ -28,6 +28,10 @@
 
 		public function has($key);
 
+        public function first();
+
+        public function last();
+
 		public function getKeys();
 
 		public function getValues();

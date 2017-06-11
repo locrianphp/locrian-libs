@@ -30,8 +30,7 @@
         }
 
         public function testBasics(){
-            self::assertEquals(1, $this->queue->first());
-            self::assertEquals(5, $this->queue->last());
+            self::assertEquals(1, $this->queue->top());
             self::assertTrue($this->queue->size() === 5);
             $this->queue->pop();
             self::assertEquals(4, $this->queue->size());

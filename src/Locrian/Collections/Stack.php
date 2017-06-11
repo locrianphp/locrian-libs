@@ -97,7 +97,7 @@
 		 * Returns top item
 		 */
 		public function top(){
-			return $this->first();
+            return $this->linkedList->first();
 		}
 
 
@@ -175,20 +175,12 @@
 		}
 
 
-		/**
-		 * @return mixed
-		 */
-		public function first(){
-			return $this->linkedList->first();
-		}
-
-
-		/**
-		 * @return mixed
-		 */
-		public function last(){
-			return $this->linkedList->last();
-		}
+        /**
+         * @return bool
+         */
+        public function isEmpty(){
+            return $this->size() === 0;
+        }
 
 
 		/**

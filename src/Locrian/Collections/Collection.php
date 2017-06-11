@@ -28,9 +28,7 @@
 
 		public function size();
 
-		public function first();
-
-		public function last();
+		public function isEmpty();
 
 		public function each(Closure $callback);
 

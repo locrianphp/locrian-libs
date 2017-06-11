@@ -92,6 +92,15 @@
 		}
 
 
+        /**
+         * @return mixed
+         * Returns the first item
+         */
+		public function top(){
+            return $this->linkedList->first();
+        }
+
+
 		/**
 		 * @return Queue
 		 * Clones the queue
@@ -166,20 +175,12 @@
 		}
 
 
-		/**
-		 * @return mixed
-		 */
-		public function first(){
-			return $this->linkedList->first();
-		}
-
-
-		/**
-		 * @return mixed
-		 */
-		public function last(){
-			return $this->linkedList->last();
-		}
+        /**
+         * @return bool
+         */
+        public function isEmpty(){
+            return $this->size() === 0;
+        }
 
 
 		/**

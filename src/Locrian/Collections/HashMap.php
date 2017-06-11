@@ -161,7 +161,6 @@
 				unset($this->values[$this->keys[$key]]);
 				unset($this->keys[$key]);
 				$this->mapSize--;
-
 				return $data;
 			}
 		}
@@ -175,7 +174,15 @@
 		}
 
 
-		/**
+        /**
+         * @return bool
+         */
+		public function isEmpty(){
+            return $this->size() === 0;
+        }
+
+
+        /**
 		 * Clears the Map
 		 */
 		public function clear(){
