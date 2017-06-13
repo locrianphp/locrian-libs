@@ -18,7 +18,7 @@
 
     use Locrian\InvalidArgumentException;
 
-    class Security{
+    class Filter{
 
         /**
          * @var array
@@ -72,10 +72,10 @@
             ];
             $this->phpTag = [
                 "keys" => [
-                    "<?", "<?php", "<%", "%>", "?>"
+                    "<?php", "<?", "<%", "%>", "?>"
                 ],
                 "values" => [
-                    "&#60;&#63;", "&#60;&#63;php", "&#60;&#37;", "&#37;&#62;", "&#63;&#62;"
+                    "&#60;&#63;php", "&#60;&#63;", "&#60;&#37;", "&#37;&#62;", "&#63;&#62;"
                 ]
             ];
             $this->badChars = [
@@ -170,7 +170,7 @@
          *
          * Encodes the single and double quotes in the target string
          */
-        public function quote($target){
+        public function encodeQuotes($target){
             return $this->convert($target, $this->quote['keys'], $this->quote['values']);
         }
 
@@ -183,7 +183,7 @@
          *
          * Decodes the single and double quotes in the target string
          */
-        public function quoteDecode($target){
+        public function decodeQuotes($target){
             return $this->convert($target, $this->quote['values'], $this->quote['keys']);
         }
 
@@ -196,7 +196,7 @@
          *
          * Clears single and double quotes in the target string
          */
-        public function clearQuote($target){
+        public function clearQuotes($target){
             return $this->clear($target, $this->quote['keys']);
         }
 
@@ -209,7 +209,7 @@
          *
          * Encodes php tags in the target string
          */
-        public function phpTag($target){
+        public function encodePhpTags($target){
             return $this->convert($target, $this->phpTag['keys'], $this->phpTag['values']);
         }
 
@@ -222,7 +222,7 @@
          *
          * Decodes php tags in the target string
          */
-        public function phpTagDecode($target){
+        public function decodePhpTags($target){
             return $this->convert($target, $this->phpTag['values'], $this->phpTag['keys']);
         }
 
@@ -235,7 +235,7 @@
          *
          * Clears php tags in the target string
          */
-        public function clearPhpTag($target){
+        public function clearPhpTags($target){
             return $this->clear($target, $this->phpTag['keys']);
         }
 
@@ -248,7 +248,7 @@
          *
          * Encodes bad characters. Look private $_badChars field to see the character list
          */
-        public function badChars($target){
+        public function encodeBadChars($target){
             return $this->convert($target, $this->badChars['keys'], $this->badChars['values']);
         }
 
@@ -259,10 +259,21 @@
          * @return mixed
          * @throws InvalidArgumentException
          *
-         * Decodes bac characters
+         * Decodes bad characters
          */
-        public function badCharsDecode($target){
+        public function decodeBadChars($target){
             return $this->convert($target, $this->badChars['values'], $this->badChars['keys']);
+        }
+
+
+        /**
+         * @param $target
+         * @return mixed
+         *
+         * Clears bad characters
+         */
+        public function clearBadChars($target){
+            return $this->clear($target, $this->badChars["keys"]);
         }
 
 
@@ -275,28 +286,13 @@
          *
          * Cleans html tags which are not in the white list
          */
-        public function strip($target, $whiteList = ""){
+        public function stripTags($target, $whiteList = ""){
             if( is_string($whiteList) ){
-                return trim(strip_tags($this->badCharsDecode($target), $whiteList));
+                return $this->decodeBadChars(strip_tags($this->decodeBadChars($target), $whiteList));
             }
             else{
                 throw new InvalidArgumentException("White list must be a string!");
             }
-        }
-
-
-        /**
-         * @param $target
-         * @param string $whiteList
-         *
-         * @return string
-         * @throws InvalidArgumentException
-         *
-         * Strips all the html tags which are not involved in white list and
-         * encodes other characters.
-         */
-        public function encodeStrip($target, $whiteList = ""){
-            return $this->badChars($this->strip($this->badCharsDecode($target), $whiteList));
         }
 
 
@@ -309,7 +305,7 @@
          * Clears url and returns the clean new url
          */
         public function clearUrl($target){
-            return $this->strip(urldecode($this->convert(filter_var($target, FILTER_SANITIZE_URL), [" "], ["+"])));
+            return $this->stripTags($this->convert(urldecode(filter_var($target, FILTER_SANITIZE_URL)), [" "], ["+"]));
         }
 
     }
