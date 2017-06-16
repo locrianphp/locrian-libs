@@ -102,6 +102,15 @@
 
 
         /**
+         * @return mixed
+         * Returns last element
+         */
+        public function bottom(){
+            return $this->linkedList->last();
+        }
+
+
+        /**
          * @return Queue
          * Clones the queue
          */
