@@ -20,7 +20,7 @@
 
         public function testTokens1(){
             $tokenizer = new DefaultConfTokenizer();
-            $tokenizer->tokenize(FileUtils::readText(new File("tests/Conf/tk.conf")));
+            $tokenizer->tokenize(FileUtils::readText(new File("tests/Conf/files/tk.conf")));
             $arr = [ new Token("Application", TokenType::NAMESPACE), new Token("{", TokenType::CURLY_OPEN),
                 new Token("key", TokenType::KEY), new Token(":=", TokenType::ASSIGN), new Token("value", TokenType::VALUE),
                 new Token("}", TokenType::CURLY_CLOSE)];
@@ -32,7 +32,7 @@
 
         public function testTokens2(){
             $tokenizer = new DefaultConfTokenizer();
-            $tokenizer->tokenize(FileUtils::readText(new File("tests/Conf/tk2.conf")));
+            $tokenizer->tokenize(FileUtils::readText(new File("tests/Conf/files/tk2.conf")));
             $arr = [
                 new Token("Application", TokenType::NAMESPACE), new Token("{", TokenType::CURLY_OPEN),
                 new Token("Application type, production or development", TokenType::COMMENT_LINE),
@@ -46,6 +46,13 @@
                 new Token("Cookie", TokenType::NAMESPACE), new Token("{", TokenType::CURLY_OPEN),
                 new Token("Crypt cookie keys", TokenType::COMMENT_LINE), new Token("crypt", TokenType::KEY),
                 new Token(":=", TokenType::ASSIGN), new Token("true", TokenType::VALUE),
+                new Token("carr", TokenType::KEY), new Token(":=", TokenType::ASSIGN),
+                new Token("[", TokenType::SQUARE_OPEN), new Token("1", TokenType::VALUE),
+                new Token(",", TokenType::COMMA),
+                new Token("2", TokenType::VALUE), new Token(",", TokenType::COMMA),
+                new Token("3", TokenType::VALUE), new Token("]", TokenType::SQUARE_CLOSE),
+                new Token("cls", TokenType::KEY), new Token(":=", TokenType::ASSIGN),
+                new Token("Locrian\Conf\Conf::class", TokenType::VALUE),
                 new Token("}", TokenType::CURLY_CLOSE), new Token("}", TokenType::CURLY_CLOSE),
                 new Token("Application.Array", TokenType::NAMESPACE), new Token("{", TokenType::CURLY_OPEN),
                 new Token("Arr", TokenType::KEY), new Token(":=", TokenType::ASSIGN),

@@ -96,6 +96,9 @@
                                 }
                                 $this->tokens->push(new Token(":=", TokenType::ASSIGN));
                             }
+                            else{
+                                $buffer .= $char;
+                            }
                             break;
                         case '#':
                             while( $char != '\n' && $pos < $len ){
