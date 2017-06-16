@@ -16,39 +16,32 @@
 
     namespace Locrian\Conf\Tokenizer;
 
-    use Locrian\Collections\ArrayList;
+    use Locrian\Collections\Queue;
     use Locrian\Util\StringUtils;
 
-    class Tokenizer{
+    class DefaultConfTokenizer implements Tokenizer{
 
         /**
-         * @var string content
-         */
-        private $content;
-
-
-        /**
-         * @var \Locrian\Collections\ArrayList tokens
+         * @var \Locrian\Collections\Queue tokens
          */
         private $tokens;
 
 
         /**
          * Tokenizer constructor.
-         *
-         * @param string $content
          */
-        public function __construct($content){
-            $this->content = $content;
-            $this->tokens = new ArrayList();
+        public function __construct(){
+            $this->tokens = new Queue();
         }
 
 
         /**
          * Tokenize all the conf file
+         *
+         * @param $content
          */
-        public function tokenize(){
-            $lines = explode("\n", $this->content);
+        public function tokenize($content){
+            $lines = explode("\n", $content);
             foreach( $lines as $line ){
                 $len = strlen($line);
                 $buffer = "";
@@ -60,9 +53,9 @@
                                 $buffer .= $char;
                             }
                             else{
-                                $this->tokens->add(new Token(trim($buffer), TokenType::NAMESPACE));
+                                $this->tokens->push(new Token(trim($buffer), TokenType::NAMESPACE));
                                 $buffer = "";
-                                $this->tokens->add(new Token($char, TokenType::CURLY_OPEN));
+                                $this->tokens->push(new Token($char, TokenType::CURLY_OPEN));
                             }
                             break;
                         case '}';
@@ -71,37 +64,37 @@
                             }
                             else{
                                 if( strlen(trim($buffer)) > 0 ){
-                                    $this->tokens->add(new Token(trim($buffer), TokenType::VALUE));
+                                    $this->tokens->push(new Token(trim($buffer), TokenType::VALUE));
                                     $buffer = "";
                                 }
-                                $this->tokens->add(new Token($char, TokenType::CURLY_CLOSE));
+                                $this->tokens->push(new Token($char, TokenType::CURLY_CLOSE));
                             }
                             break;
                         case '[':
-                            $this->tokens->add(new Token($char, TokenType::SQUARE_OPEN));
+                            $this->tokens->push(new Token($char, TokenType::SQUARE_OPEN));
                             break;
                         case ']':
                             if( strlen(trim($buffer)) > 0 ){
-                                $this->tokens->add(new Token(trim($buffer), TokenType::VALUE));
+                                $this->tokens->push(new Token(trim($buffer), TokenType::VALUE));
                                 $buffer = "";
                             }
-                            $this->tokens->add(new Token($char, TokenType::SQUARE_CLOSE));
+                            $this->tokens->push(new Token($char, TokenType::SQUARE_CLOSE));
                             break;
                         case ',':
                             if( strlen(trim($buffer)) > 0 ){
-                                $this->tokens->add(new Token(trim($buffer), TokenType::VALUE));
+                                $this->tokens->push(new Token(trim($buffer), TokenType::VALUE));
                                 $buffer = "";
                             }
-                            $this->tokens->add(new Token($char, TokenType::COMMA));
+                            $this->tokens->push(new Token($char, TokenType::COMMA));
                             break;
                         case ':':
                             if( $pos < ($len - 1) && $line[$pos + 1] == '=' ){
                                 $pos++;
                                 if( strlen($buffer) > 0 ){
-                                    $this->tokens->add(new Token(trim($buffer), TokenType::KEY));
+                                    $this->tokens->push(new Token(trim($buffer), TokenType::KEY));
                                     $buffer = "";
                                 }
-                                $this->tokens->add(new Token(":=", TokenType::ASSIGN));
+                                $this->tokens->push(new Token(":=", TokenType::ASSIGN));
                             }
                             break;
                         case '#':
@@ -111,7 +104,7 @@
                                 $pos++;
                             }
                             $buffer = trim(str_replace("#", "", $buffer));
-                            $this->tokens->add(new Token($buffer, TokenType::COMMENT_LINE));
+                            $this->tokens->push(new Token($buffer, TokenType::COMMENT_LINE));
                             $buffer = "";
                             break;
                         default: // add buffer
@@ -120,10 +113,10 @@
                 }
                 $buffer = trim($buffer);
                 if( strlen($buffer) > 0 && $this->tokens->size() > 0 ){
-                    $lastToken = $this->tokens->last();
+                    $lastToken = $this->tokens->bottom();
                     if( $lastToken->getTokenType() == TokenType::ASSIGN ||
                         $lastToken->getTokenType() == TokenType::COMMA || $lastToken->getTokenType() == TokenType::SQUARE_OPEN ){
-                        $this->tokens->add(new Token($buffer, TokenType::VALUE));
+                        $this->tokens->push(new Token($buffer, TokenType::VALUE));
                     }
                 }
             }
@@ -131,7 +124,7 @@
 
 
         /**
-         * @return \Locrian\Collections\ArrayList
+         * @return \Locrian\Collections\Queue
          */
         public function getTokens(){
             return $this->tokens;

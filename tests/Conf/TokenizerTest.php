@@ -10,7 +10,7 @@
     namespace Locrian\Tests\Conf;
 
     use Locrian\Conf\Tokenizer\Token;
-    use Locrian\Conf\Tokenizer\Tokenizer;
+    use Locrian\Conf\Tokenizer\DefaultConfTokenizer;
     use Locrian\Conf\Tokenizer\TokenType;
     use Locrian\IO\File;
     use Locrian\Util\FileUtils;
@@ -19,8 +19,8 @@
     class TokenizerTest extends PHPUnit_Framework_TestCase{
 
         public function testTokens1(){
-            $tokenizer = new Tokenizer(FileUtils::readText(new File("tests/Conf/tk.conf")));
-            $tokenizer->tokenize();
+            $tokenizer = new DefaultConfTokenizer();
+            $tokenizer->tokenize(FileUtils::readText(new File("tests/Conf/tk.conf")));
             $arr = [ new Token("Application", TokenType::NAMESPACE), new Token("{", TokenType::CURLY_OPEN),
                 new Token("key", TokenType::KEY), new Token(":=", TokenType::ASSIGN), new Token("value", TokenType::VALUE),
                 new Token("}", TokenType::CURLY_CLOSE)];
@@ -31,8 +31,8 @@
         }
 
         public function testTokens2(){
-            $tokenizer = new Tokenizer(FileUtils::readText(new File("tests/Conf/tk2.conf")));
-            $tokenizer->tokenize();
+            $tokenizer = new DefaultConfTokenizer();
+            $tokenizer->tokenize(FileUtils::readText(new File("tests/Conf/tk2.conf")));
             $arr = [
                 new Token("Application", TokenType::NAMESPACE), new Token("{", TokenType::CURLY_OPEN),
                 new Token("Application type, production or development", TokenType::COMMENT_LINE),
