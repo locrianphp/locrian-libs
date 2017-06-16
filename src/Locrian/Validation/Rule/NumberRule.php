@@ -33,7 +33,7 @@
                 return true;
             }
             else{
-                return preg_match("/^[0-9]+$/", $target);
+                return preg_match("/^[0-9\.]+$/", $target);
             }
         }
 
