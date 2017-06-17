@@ -112,7 +112,12 @@
                         $tokenStack->push($token);
                         break;
                     case TokenType::KEY:
-                        $tokenStack->push($token);
+                        if( preg_match("/[a-zA-Z0-9]+/", $token->getToken()) ){
+                            $tokenStack->push($token);
+                        }
+                        else{
+                            throw new ParseException("Invalid key: " . $token->getToken());
+                        }
                         break;
                     case TokenType::VALUE:
                         $prev = $tokenStack->top();
