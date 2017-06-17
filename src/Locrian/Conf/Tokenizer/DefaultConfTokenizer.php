@@ -53,7 +53,7 @@
                                 $buffer .= $char;
                             }
                             else{
-                                $this->tokens->push(new Token(trim($buffer), TokenType::NAMESPACE));
+                                $this->tokens->push(new Token(trim($buffer), TokenType::NS));
                                 $buffer = "";
                                 $this->tokens->push(new Token($char, TokenType::CURLY_OPEN));
                             }

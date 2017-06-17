@@ -19,7 +19,7 @@
     class TokenType{
 
         // For Application { Application is the namespace token
-        const NAMESPACE = 1;
+        const NS = 1;
 
         // {
         const CURLY_OPEN = 2;

@@ -55,12 +55,12 @@
             while( $it->hasNext() ){
                 $token = $it->next();
                 switch($token->getTokenType()){
-                    case TokenType::NAMESPACE:
+                    case TokenType::NS:
                         $tokenStack->push($token);
                         break;
                     case TokenType::CURLY_OPEN:
                         $co = $tokenStack->top();
-                        if( $co != null && $co->getTokenType() == TokenType::NAMESPACE ){
+                        if( $co != null && $co->getTokenType() == TokenType::NS ){
                             $ns = $tokenStack->pop();
                             $parent = $namespaceStack->isEmpty() ? $root : $namespaceStack->top();
                             $namespaceStack->push($this->createNamespaceNode($parent, $ns->getToken()));
