@@ -228,7 +228,14 @@
             $finalString = "";
             $names = $this->map->getKeys();
             foreach( $names as $name ){
-                $finalString .= $name . $this->keyValueSeparator . $this->map->get($name) . $this->propertySeparator;
+                $value = $this->map->get($name);
+                if( $value === true ){
+                    $value = "true";
+                }
+                if( $value === false ){
+                    $value = "false";
+                }
+                $finalString .= $name . $this->keyValueSeparator . $value . $this->propertySeparator;
             }
             return trim(trim($finalString, $this->propertySeparator), $this->keyValueSeparator);
         }
