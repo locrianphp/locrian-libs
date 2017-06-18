@@ -158,13 +158,13 @@
 
         /**
          * @param $propName string property name
-         * @param $propValue string property name
+         * @param $propValue mixed property name
          *
          * @throws InvalidArgumentException
          * @return $this
          */
         public function setProperty($propName, $propValue){
-            if( is_string($propName) && is_string($propValue) ){
+            if( is_string($propName) ){
                 if( $this->map->has($propName) ){
                     $this->map->set($propName, $propValue);
                 }
@@ -174,7 +174,7 @@
                 return $this;
             }
             else{
-                throw new InvalidArgumentException("Property name and value must be string.");
+                throw new InvalidArgumentException("Property name must be string.");
             }
         }
 
