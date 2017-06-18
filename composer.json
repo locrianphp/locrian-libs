@@ -1,5 +1,5 @@
 {
-  "name": "locrianphp/locrian",
+  "name": "locrianphp/locrian-libs",
   "type": "library",
   "description": "Locrian Framework Libraries",
   "keywords": ["php","framework","locrian","locrianframework"],
