@@ -82,9 +82,12 @@
                             $tmpArr = $keyValuePair;
                             if( $len > 2 ){
                                 unset($tmpArr[0]);
-                                $tmpArr = implode("=", $tmpArr);
+                                $val = implode("=", $tmpArr);
                             }
-                            $this->map->add($keyValuePair[0], $tmpArr);
+                            else{
+                                $val = $keyValuePair[1];
+                            }
+                            $this->map->add($keyValuePair[0], $val);
                         }
                     }
                 }
