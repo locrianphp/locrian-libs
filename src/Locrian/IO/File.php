@@ -77,6 +77,9 @@
                     $this->relativeFilePath = $path;
                     $nameArr = explode(self::SEPARATOR, $path);
                     $this->name = end($nameArr);
+                    if( $this->name == "" && count($nameArr) > 1 ){ // We are dealing with a directory with a separator at the end of its path
+                        $this->name = $nameArr[count($nameArr) - 2];
+                    }
                 }
                 else{ // Uri
                     $this->relativeFilePath = $path;
@@ -300,7 +303,7 @@
                         $len = $childList->size();
                         for( $i = 0; $i < $len; $i++ ){
                             $child = $childList->get($i);
-                            if( !$child->_copy(new File($destination->getPath() . "/" . $child->getName())) ){
+                            if( !$child->copy(new File($destination->getPath() . "/" . $child->getName())) ){
                                 $success = false;
                             }
                         }

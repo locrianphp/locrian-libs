@@ -27,6 +27,7 @@
          * @throws IOException
          */
         public function __construct($handle, $bufferSize = 1024){
+            $bufferSize++; // Reading bufferSize - 1 bytes
             if( $handle instanceof File ){
                 if( !$handle->exists() ){
                     $handle->touch();
