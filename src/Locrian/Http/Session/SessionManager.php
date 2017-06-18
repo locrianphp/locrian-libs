@@ -14,11 +14,10 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-    namespace Locrian\Http\Session\Repository;
+    namespace Locrian\Http\Session;
 
     use Locrian\Crypt\HashHMAC;
     use Locrian\Http\Session\Driver\SessionDriver;
-    use Locrian\Http\Session\Session;
     use Locrian\IO\File;
     use Locrian\Util\Path;
     use Locrian\Util\Properties;
@@ -32,9 +31,9 @@
 
 
         /**
-         * Session repository property file name
+         * Session manager property file name
          */
-        const CACHE_FILE_NAME = "session_repository.properties";
+        const CACHE_FILE_NAME = "session_manager.properties";
 
 
         /**
@@ -62,12 +61,12 @@
 
 
         /**
-         * SessionRepository constructor.
+         * SessionManager constructor.
          *
          * @param \Locrian\Http\Session\Driver\SessionDriver $driver
          * @param \Locrian\Crypt\HashHMAC $hashHMAC
          * @param string $cacheDir
-         * @param integer $gcInterval garbage collector check interval
+         * @param integer $gcInterval garbage collecting check interval
          */
         public function __construct(SessionDriver $driver, HashHMAC $hashHMAC, $cacheDir, $gcInterval){
             $this->driver = $driver;
@@ -85,7 +84,7 @@
         private function checkGC(){
             $now = time();
             $lastGCCheck = $this->cache->getInt("lastGCCheck", 0);
-            if( ($now - $lastGCCheck) > $this->gcInterval ){
+            if( ($now - $lastGCCheck) >= $this->gcInterval ){
                 $this->driver->destroyExpiredSessions();
                 $this->cache->setProperty("lastGCCheck", $now);
                 $this->cache->commit();
@@ -97,7 +96,7 @@
          * @return \Locrian\Http\Session\Session
          * Create new empty Session object
          */
-        public function create(){
+        public function createSession(){
             return new Session($this->generateSessionId());
         }
 
@@ -106,7 +105,7 @@
          * @param \Locrian\Http\Session\Session $session
          * Save the session
          */
-        public function save(Session $session){
+        public function saveSession(Session $session){
             $this->driver->save($session);
         }
 
@@ -116,7 +115,7 @@
          * @return \Locrian\Http\Session\Session|null
          * Return the session belongs to the given id
          */
-        public function find($id){
+        public function findSession($id){
             return $this->driver->find($id);
         }
 
@@ -125,7 +124,7 @@
          * @param string $id Session id
          * Remove the session belongs to the given id
          */
-        public function remove($id){
+        public function removeSession($id){
             $this->driver->remove($id);
         }
 

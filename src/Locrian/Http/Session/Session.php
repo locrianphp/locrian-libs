@@ -16,6 +16,8 @@
 
     namespace Locrian\Http\Session;
 
+    use Locrian\Collections\HashMap;
+
     class Session{
 
         /**
@@ -45,6 +47,7 @@
          * @param string $id
          */
         public function __construct($id){
+            $this->attributes = new HashMap();
             $this->id = $id;
             $this->creationTime = time();
         }

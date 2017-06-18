@@ -75,8 +75,8 @@
          * @return \Locrian\Http\Session\Session|null
          */
         public function find($id){
-            $search = $id . "_";
-            $result = glob(Path::join($this->sessionDir->getPath(), $search));
+            $search = $id . "_*";
+            $result = glob(Path::normalize(Path::join($this->sessionDir->getPath(), $search)));
             if( $result === false || count($result) !== 1 ){
                 return null;
             }
@@ -87,7 +87,7 @@
                     if( $content !== false ){
                         $session = unserialize($content);
                         $now = time();
-                        if( ($now - $session->getCreationTime()) > $this->maxLifetime ){
+                        if( ($now - $session->getCreationTime()) >= $this->maxLifetime ){
                             $file->remove();
                             return null;
                         }
@@ -111,7 +111,7 @@
          * Remove a session
          */
         public function remove($id){
-            $search = $id . "_";
+            $search = $id . "_*";
             $result = glob(Path::join($this->sessionDir->getPath(), $search));
             if( $result !== false && count($result) === 1 ){
                 $file = new File($result[0]);
@@ -142,7 +142,7 @@
                 foreach( $result as $fileName ){
                     $exploded = explode("_", $fileName);
                     $time = intval(str_replace(".session", "", end($exploded)));
-                    if( $time > 0 && ($now - $time) > $this->maxLifetime ){
+                    if( $time > 0 && ($now - $time) >= $this->maxLifetime ){
                         $f = new File($fileName);
                         $f->remove();
                     }
