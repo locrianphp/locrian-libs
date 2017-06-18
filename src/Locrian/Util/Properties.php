@@ -97,20 +97,61 @@
          * @param $propName string property name
          * @param null $defaultValue the value when the property does not exist
          *
-         * @return bool|mixed|null
+         * @return mixed|null
          * @throws InvalidArgumentException
          */
-        public function getProperty($propName, $defaultValue = null){
-            if( is_string($propName) ){
-                if( $this->map->has($propName) ){
-                    return $this->map->get($propName);
-                }
-                else{
-                    return $defaultValue;
-                }
+        public function getString($propName, $defaultValue = null){
+            if( $this->map->has($propName) ){
+                return $this->map->get($propName);
             }
             else{
-                throw new InvalidArgumentException("Property name must be string.");
+                return $defaultValue;
+            }
+        }
+
+
+        /**
+         * @param string $propName
+         * @param int $defaultValue
+         * @return int
+         */
+        public function getInt($propName, $defaultValue = 0){
+            if( $this->map->has($propName) ){
+                return intval($this->map->get($propName));
+            }
+            else{
+                return $defaultValue;
+            }
+        }
+
+
+        /**
+         * @param string $propName
+         * @param int $defaultValue
+         * @return float|int
+         */
+        public function getDouble($propName, $defaultValue = 0){
+            if( $this->map->has($propName) ){
+                return doubleval($this->map->get($propName));
+            }
+            else{
+                return $defaultValue;
+            }
+        }
+
+
+        /**
+         * @param string $propName
+         * @param bool $defaultValue
+         * @return bool
+         */
+        public function getBoolean($propName, $defaultValue = false){
+            if( $this->map->has($propName) ){
+                $val = $this->map->get($propName);
+                return $val == "true" ? true : false;
+            }
+            else{
+                return $defaultValue;
             }
         }
 
@@ -191,19 +232,3 @@
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
