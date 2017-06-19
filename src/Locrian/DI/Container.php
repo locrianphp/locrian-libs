@@ -22,7 +22,6 @@
     use Locrian\InvalidArgumentException;
     use Locrian\RuntimeException;
 
-
     class Container{
 
         /**
@@ -41,7 +40,7 @@
 
         /**
          * @param $callable Closure function
-         * @param $name string | integer name of the service
+         * @param $name string name of the bean
          *
          * @throws InvalidArgumentException
          * @throws \Locrian\RuntimeException
@@ -74,7 +73,7 @@
 
         /**
          * @param $callable Closure function
-         * @param $name string | integer name of the service
+         * @param $name string name of the bean
          *
          * @throws InvalidArgumentException
          * @throws \Locrian\RuntimeException
@@ -111,18 +110,23 @@
          */
         public function put($name, $target){
             if( !$this->beans->has($name) ){
-                $this->beans->add($name, function() use($target){
-                    return $target;
-                });
+                if( is_callable($target) ){
+                    $this->beans->add($name, $target);
+                }
+                else{
+                    $this->beans->add($name, function() use ($target){
+                        return $target;
+                    });
+                }
             }
             else{
-                throw new RuntimeException("Service name must be unique");
+                throw new RuntimeException("Bean name must be unique");
             }
         }
 
 
         /**
-         * @param $name string | integer name of the service
+         * @param $name string name of the bean
          *
          * @return mixed
          * @throws IndexOutOfBoundsException
@@ -141,6 +145,24 @@
 
 
         /**
+         * @return array
+         * Return all registered bean names as array
+         */
+        public function getBeanNames(){
+            return $this->beans->getKeys();
+        }
+
+
+        /**
+         * @param string $name
+         * @return bool
+         */
+        public function has($name){
+            return $this->beans->has($name);
+        }
+
+
+        /**
          * @param $name string
          *
          * Remove item from container
@@ -155,23 +177,23 @@
         /**
          * @param ServiceProvider $provider
          *
-         * You can create your own custom service providers and attach their services
+         * You can create your own custom service providers and attach their beans
          * by using this method.
          *
-         * Service provider must implement the service provider interface which has just one
-         * register method which takes a container object (this object). Register method must
-         * use the multiple and singleton methods of the container object when adding new services
+         * Service provider must implement the ServiceProvider interface which has just one
+         * register method which takes a container object (this object). Register method should
+         * use the factory, put or singleton methods of the container object when adding new beans
          * to the container. See the following example.
          *
          * class CustomServiceProvider implements ServiceProvider{
          *
          *      public function register(Container $container){
          *
-         *          $container->singleton("NameOfService", function(){
+         *          $container->singleton("NameOfBean", function(){
          *              return new NameOfTheObject();
          *          });
          *
-         *          $container->factory("NameOfOtherService", function(){
+         *          $container->factory("NameOfOtherBean", function(){
          *              return new NameOfOtherObject();
          *          });
          *
@@ -179,7 +201,7 @@
          *
          * }
          */
-        public function provide(ServiceProvider $provider){
+        public function register(ServiceProvider $provider){
             $provider->register($this);
         }
 
