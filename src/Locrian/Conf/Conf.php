@@ -100,6 +100,24 @@
 
 
         /**
+         * @param string $key
+         * @param mixed $value
+         * @throws \Locrian\InvalidArgumentException
+         *
+         * Overrides an existing configuration
+         * Change will not be permanent
+         */
+        public function override($key, $value){
+            if( isset($this->conf[$key]) ){
+                $this->conf[$key] = $value;
+            }
+            else{
+                throw new InvalidArgumentException("Unknown configuration: " . $key);
+            }
+        }
+
+
+        /**
          * @param string $ns
          * @return array
          *
