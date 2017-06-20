@@ -10,11 +10,11 @@
     namespace Locrian\Tests\Http\Session;
 
     use Locrian\Collections\ArrayList;
-    use Locrian\Http\Session\Driver\FileDriver;
+    use Locrian\Http\Session\Repository\FileRepository;
     use Locrian\Http\Session\Session;
     use PHPUnit_Framework_TestCase;
 
-    class FileDriverTest extends PHPUnit_Framework_TestCase{
+    class FileRepositoryTest extends PHPUnit_Framework_TestCase{
 
         private $lifeTime = 60*60; // 1 hour
 
@@ -36,7 +36,7 @@
         }
 
         public function testSave(){
-            $fd = new FileDriver($this->lifeTime, $this->sessionDir);
+            $fd = new FileRepository($this->lifeTime, $this->sessionDir);
             $fd->save($this->testSession);
             $path = "tests/Http/Session/" . $this->testSession->getId() . "_" . $this->testSession->getCreationTime() . ".session";
             self::assertTrue(file_exists($path));
@@ -44,7 +44,7 @@
         }
 
         public function testFind(){
-            $fd = new FileDriver($this->lifeTime, $this->sessionDir);
+            $fd = new FileRepository($this->lifeTime, $this->sessionDir);
             $fd->save($this->testSession);
             $path = "tests/Http/Session/" . $this->testSession->getId() . "_" . $this->testSession->getCreationTime() . ".session";
             $sess = $fd->find($this->testSession->getId());
@@ -53,14 +53,14 @@
         }
 
         public function testExpiredFind(){
-            $fd = new FileDriver(0, $this->sessionDir); // 0 seconds
+            $fd = new FileRepository(0, $this->sessionDir); // 0 seconds
             $fd->save($this->testSession);
             $sess = $fd->find($this->testSession->getId());
             self::assertNull($sess);
         }
 
         public function testSaveSession(){
-            $fd = new FileDriver($this->lifeTime, $this->sessionDir);
+            $fd = new FileRepository($this->lifeTime, $this->sessionDir);
             $fd->save($this->testSession);
             $this->testSession->setAttribute("n1", "v2");
             $fd->save($this->testSession);
@@ -70,7 +70,7 @@
         }
 
         public function testFindValues(){
-            $fd = new FileDriver($this->lifeTime, $this->sessionDir);
+            $fd = new FileRepository($this->lifeTime, $this->sessionDir);
             $fd->save($this->testSession);
             $path = "tests/Http/Session/" . $this->testSession->getId() . "_" . $this->testSession->getCreationTime() . ".session";
             $sess = $fd->find($this->testSession->getId());
@@ -83,7 +83,7 @@
         }
 
         public function testRemove(){
-            $fd = new FileDriver($this->lifeTime, $this->sessionDir);
+            $fd = new FileRepository($this->lifeTime, $this->sessionDir);
             $fd->save($this->testSession);
             $path = "tests/Http/Session/" . $this->testSession->getId() . "_" . $this->testSession->getCreationTime() . ".session";
             $fd->remove($this->testSession->getId());
@@ -92,7 +92,7 @@
         }
 
         public function testCount(){
-            $fd = new FileDriver($this->lifeTime, $this->sessionDir);
+            $fd = new FileRepository($this->lifeTime, $this->sessionDir);
             self::assertEquals(0, $fd->count());
             $fd->save($this->testSession);
             $fd->save(new Session("dummyId2"));
@@ -102,7 +102,7 @@
         }
 
         public function testGC(){
-            $fd = new FileDriver(0, $this->sessionDir); // 0 seconds
+            $fd = new FileRepository(0, $this->sessionDir); // 0 seconds
             $fd->save($this->testSession);
             self::assertEquals(1, $fd->count());
             $fd->destroyExpiredSessions();

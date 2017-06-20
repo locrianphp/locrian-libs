@@ -14,7 +14,7 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-    namespace Locrian\Http\Session\Driver;
+    namespace Locrian\Http\Session\Repository;
 
     use Locrian\Http\Session\Session;
     use Locrian\IO\File;
@@ -22,7 +22,7 @@
     use Locrian\Util\FileUtils;
     use Locrian\Util\Path;
 
-    class FileDriver implements SessionDriver{
+    class FileRepository implements SessionRepository{
 
         /**
          * @var integer

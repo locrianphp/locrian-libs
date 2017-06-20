@@ -17,7 +17,7 @@
     namespace Locrian\Http\Session;
 
     use Locrian\Crypt\HashHMAC;
-    use Locrian\Http\Session\Driver\SessionDriver;
+    use Locrian\Http\Session\Repository\SessionRepository;
     use Locrian\IO\File;
     use Locrian\Util\Path;
     use Locrian\Util\Properties;
@@ -37,7 +37,7 @@
 
 
         /**
-         * @var \Locrian\Http\Session\Driver\SessionDriver
+         * @var \Locrian\Http\Session\Repository\SessionRepository
          */
         private $driver;
 
@@ -63,12 +63,12 @@
         /**
          * SessionManager constructor.
          *
-         * @param \Locrian\Http\Session\Driver\SessionDriver $driver
+         * @param \Locrian\Http\Session\Repository\SessionRepository $driver
          * @param \Locrian\Crypt\HashHMAC $hashHMAC
          * @param string $cacheDir
          * @param integer $gcInterval garbage collecting check interval
          */
-        public function __construct(SessionDriver $driver, HashHMAC $hashHMAC, $cacheDir, $gcInterval){
+        public function __construct(SessionRepository $driver, HashHMAC $hashHMAC, $cacheDir, $gcInterval){
             $this->driver = $driver;
             $this->hashHMAC = $hashHMAC;
             $this->gcInterval = $gcInterval;

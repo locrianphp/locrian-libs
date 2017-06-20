@@ -14,11 +14,11 @@
      * * * * * * * * * * * * * * * * * * * *
      */
 
-    namespace Locrian\Http\Session\Driver;
+    namespace Locrian\Http\Session\Repository;
 
     use Locrian\Http\Session\Session;
 
-    interface SessionDriver{
+    interface SessionRepository{
         public function save(Session $session);
         public function find($id);
         public function remove($id);

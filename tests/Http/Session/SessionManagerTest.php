@@ -10,7 +10,7 @@
     namespace Locrian\Tests\Http\Session;
 
     use Locrian\Crypt\HashHMAC;
-    use Locrian\Http\Session\Driver\FileDriver;
+    use Locrian\Http\Session\Repository\FileRepository;
     use Locrian\Http\Session\Session;
     use Locrian\Http\Session\SessionManager;
     use PHPUnit_Framework_TestCase;
@@ -18,7 +18,7 @@
     class SessionManagerTest extends PHPUnit_Framework_TestCase{
 
         /**
-         * @var \Locrian\Http\Session\Driver\FileDriver
+         * @var \Locrian\Http\Session\Repository\FileRepository
          */
         private $driver;
 
@@ -28,7 +28,7 @@
         private $hash;
 
         protected function setUp(){
-            $this->driver = new FileDriver(3600, "tests/Http/Session/");
+            $this->driver = new FileRepository(3600, "tests/Http/Session/");
             $this->hash = new HashHMAC("secret");
         }
 
@@ -44,7 +44,7 @@
         }
 
         public function testGC(){
-            $d = new FileDriver(0, "tests/Http/Session/");
+            $d = new FileRepository(0, "tests/Http/Session/");
             $d->save(new Session("1"));
             $d->save(new Session("2"));
             $d->save(new Session("3"));
