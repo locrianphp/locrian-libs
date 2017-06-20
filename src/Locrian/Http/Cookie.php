@@ -220,9 +220,7 @@
             // If we don't do this encrypted keys will be encrypt again and because of that no cookie will be removed.
             $this->cryptKeys = false;
             foreach( $_COOKIE as $key => $val ){
-                if( $key != session_name() ){
-                    $this->set($key, "", "-1 day");
-                }
+                $this->set($key, "", "-1 day");
             }
             // Set back the crypt
             $this->cryptKeys = $tmp;
