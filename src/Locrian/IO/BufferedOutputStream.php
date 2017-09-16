@@ -88,6 +88,7 @@
         public function flush(){
             if( strlen($this->stringBuffer) > 0 ){
                 $this->writeToStream($this->stringBuffer);
+                $this->stringBuffer = "";
             }
         }
 
